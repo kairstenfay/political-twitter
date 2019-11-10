@@ -1,8 +1,8 @@
 #! ./bin/bash
 
-for screen_name in 'AndrewYang' 'PeteButtigieg' 'ewarren' 'BernieSanders' 'TulsiGabbard' 'AmyKlobuchar' 'realDonaldTrump' 'KamalaHarris'
+for screen_name in 'AndrewYang' 'TulsiGabbard' 'AmyKlobuchar' 'realDonaldTrump' 'KamalaHarris' # 'PeteButtigieg' 'ewarren' 'BernieSanders'
     do
-        python twitter.py -q $screen_name > data/$screen_name.ndjson
+        python search-tweets.py -q $screen_name > data/$screen_name.ndjson
     done
 
 
