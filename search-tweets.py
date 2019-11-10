@@ -14,7 +14,7 @@ from typing import Any, List
 LOG = logging.getLogger(__name__)
 
 parser = argparse.ArgumentParser(description="""
-    Search Twitter for Tweets. Returns only Tweets coded in English.""")
+    Search Twitter for Tweets. Returns the most popular Tweets until 2019-11-08 coded in English.""")
 parser.add_argument('-q', metavar='<query>', type=str,
                     help='a query phrase to send to Twitter\'s Search API.')
 args = parser.parse_args()
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         wait_on_rate_limit_notify=True,
         compression=True)
 
-    for tweet in tweepy.Cursor(api.search, q=args.q, result_type='popular', until='2019-11-07', tweet_mode='extended',
+    for tweet in tweepy.Cursor(api.search, q=args.q, result_type='mixed', until='2019-11-08', tweet_mode='extended',
         ).items(5000):
 
         details = tweet._json
