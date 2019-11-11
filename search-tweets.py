@@ -30,7 +30,7 @@ if __name__ == '__main__':
         wait_on_rate_limit_notify=True,
         compression=True)
 
-    for tweet in tweepy.Cursor(api.search, q=args.q, result_type='mixed', until='2019-11-08', tweet_mode='extended',
+    for tweet in tweepy.Cursor(api.search, q=args.q, result_type='mixed', until='2019-11-09', tweet_mode='extended',
         ).items(5000):
 
         details = tweet._json
