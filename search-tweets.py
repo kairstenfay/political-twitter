@@ -14,9 +14,13 @@ from typing import Any, List
 LOG = logging.getLogger(__name__)
 
 parser = argparse.ArgumentParser(description="""
-    Search Twitter for Tweets. Returns the most popular Tweets until 2019-11-08 coded in English.""")
-parser.add_argument('-q', metavar='<query>', type=str,
+    Search Twitter for Tweets. Returns the most popular Tweets coded in English.""")
+parser.add_argument('-q', metavar='<query>', type=str, required=False,
                     help='a query phrase to send to Twitter\'s Search API.')
+parser.add_argument('-u', metavar='<user id or screen name>', type=str, required=False,
+                    help='a Twitter user ID or timeline from which to source Tweets.')
+parser.add_argument('-d', metavar='<date>', type=str, required=True,
+                    help='the last date from which to pull Tweets. YYYY-MM-DD')
 args = parser.parse_args()
 
 
@@ -30,13 +34,23 @@ if __name__ == '__main__':
         wait_on_rate_limit_notify=True,
         compression=True)
 
-    for tweet in tweepy.Cursor(api.search, q=args.q, result_type='mixed', until='2019-11-09', tweet_mode='extended',
-        ).items(5000):
+    if args.q:
+        tweets = tweepy.Cursor(api.search, q=args.q, result_type='mixed', until=args.d,
+            tweet_mode='extended',
+            ).items(5000)
 
+    elif args.u:
+        tweets = tweepy.Cursor(api.user_timeline, id=args.u, result_type='mixed', until=args.d,
+            tweet_mode='extended',
+            ).items(5000)
+
+    else:
+        raise Exception("A query or user ID is required.")
+
+    for tweet in tweets:
         details = tweet._json
-
-        if details['metadata']['iso_language_code'] != 'en' and details['lang'] != 'en':
-            continue
+        #if (details['metadata'] and details['metadata']['iso_language_code'] != 'en') and details['lang'] != 'en':
+        #    continue
 
         print(json.dumps(details))
 

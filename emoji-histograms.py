@@ -87,5 +87,5 @@ if __name__ == '__main__':
                 frequencies = stats[screen_name]['emoji_frequencies'].values()
                 for entry, count in stats[screen_name]['top_emojis']:
                     print(math.ceil(count / most_common[len(most_common) - 1][1]) * entry)
-                breakpoint()
+
                 print()
