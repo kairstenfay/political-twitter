@@ -35,14 +35,19 @@ stopwords.add('people')
 stopwords.add('thank')
 stopwords.add('thanks')
 stopwords.add('one')
+stopwords.add('go')
+stopwords.add('got')
+stopwords.add('let')
 
 LOG = logging.getLogger(__name__)
 SPEAKER_NAME_PADDING = ': '
 
 parser = argparse.ArgumentParser(description="""
     Search Debate transcripts.""")
-parser.add_argument('--date', metavar='<debate date>', type=str, required=True,
-                    help='a string in mon-DD-YYYY format on which debate date to parse.')
+parser.add_argument('--mask', metavar='<mask>', type=str, required=False,
+                    help='a mask to use to project a word cloud onto.')
+# parser.add_argument('--date', metavar='<debate date>', type=str, required=True,
+#                     help='a string in mon-DD-YYYY format on which debate date to parse.')
 
 args = parser.parse_args()
 
@@ -58,64 +63,72 @@ debate_nights = {
     'dec-19-2019': '6',
 }
 
-def make_image(text: Counter, date: str):
-    # image_mask = imageio.imread("us-flag.png", as_gray=False, pilmode="RGB")
-    # image_colors = ImageColorGenerator(image_mask)
+def make_image(text: Counter, mask_name: str):
 
-    wc = WordCloud(background_color="white", max_words=5000, repeat=True) # mask=image_mask)
-    wc.generate_from_frequencies(text)
+    if mask_name:
+        image_mask = imageio.imread(mask_name, as_gray=False, pilmode="RGB")
+        image_colors = ImageColorGenerator(image_mask)
 
-    plt.imshow(#wc.recolor(color_func=image_colors),
-        wc, interpolation="bilinear")
+        wc = WordCloud(background_color="white", max_words=5000, repeat=True, mask=image_mask)
+        wc.generate_from_frequencies(text)
+        plt.imshow(wc.recolor(color_func=image_colors), interpolation="bilinear")
+
+    else:
+        wc = WordCloud(background_color="white", max_words=5000, repeat=True)
+        wc.generate_from_frequencies(text)
+        plt.imshow(wc, interpolation="bilinear")
+
     plt.axis("off")
-    plt.title(f'Most common words {speaker} spoke in Debate {debate_nights[date]}', # TODO
+    plt.title(f'Most common words {speaker} spoke in all debates', # TODO
         pad=10,
         fontdict={
             'fontsize': 'x-large',
             'fontfamily': 'monospace',
         })
 
-    plt.savefig(f'wordclouds/speeches/{speaker}-{date}.png')
+    plt.savefig(f'wordclouds/speeches/{speaker}-all-debates.png')
 
 if __name__ == '__main__':
+    import glob
+    dialogue: Dict[str, List[str]] = {}
+    speaker: str = None
 
-    with open(f"nbcnews_debate_transcript_{args.date}.txt", "r") as f:
-        lines = f.readlines()
+    for file in (glob.glob('*.txt')):
 
-        dialogue: Dict[str, List[str]] = {}
-        speaker: str = None
+        with open(file, "r") as f:
+            lines = f.readlines()
 
-        for line in lines:
-            line = re.sub(r'\n|\\|\-|\,|\.|\?', '', line)
-            if not line:
-                continue
-
-            is_speech_start = re.match(r'^[A-Z]{3,}(?:)', line)
-            line = line.lower()
-
-            if is_speech_start:
-                speaker = is_speech_start[0]
-                speech = line[len(speaker + SPEAKER_NAME_PADDING):]
-
-                if not dialogue.get(speaker):
-                    dialogue[speaker] = [speech]  # TODO
-                else:
-                    dialogue[speaker].append(speech)
-
-            else:
-                if not speaker:
+            for line in lines:
+                line = re.sub(r'\n|\\|\-|\,|\.|\?', '', line)
+                if not line:
                     continue
-                dialogue[speaker].append(line)
 
-        for speaker in dialogue:
-            # Create corpus
-            corpus = ' '.join(s for s in dialogue[speaker]).split(' ')
-            meaningful_words = [ w for w in corpus if w and w not in stopwords and not w.startswith('(')]
-            print('Analyzing candidate ' + speaker)
-            counter = Counter(meaningful_words)
-            if not counter:
-                continue
-            print(counter.most_common(15))
+                is_speech_start = re.match(r'^[A-Z]{3,}(?:)', line)
+                line = line.lower()
 
-            make_image(counter, args.date)
+                if is_speech_start:
+                    speaker = is_speech_start[0]
+                    speech = line[len(speaker + SPEAKER_NAME_PADDING):]
+
+                    if not dialogue.get(speaker):
+                        dialogue[speaker] = [speech]  # TODO
+                    else:
+                        dialogue[speaker].append(speech)
+
+                else:
+                    if not speaker:
+                        continue
+                    dialogue[speaker].append(line)
+
+    for speaker in dialogue:
+        # Create corpus
+        corpus = ' '.join(s for s in dialogue[speaker]).split(' ')
+        meaningful_words = [ w for w in corpus if w and w not in stopwords and not w.startswith('(')]
+        print('Analyzing candidate ' + speaker)
+        counter = Counter(meaningful_words)
+        if not counter:
+            continue
+        print(counter.most_common(15))
+
+        make_image(counter, args.mask)
 # avg num followers; top tweet hashtags ; top user hashtags ; top emojis ; sentiment score

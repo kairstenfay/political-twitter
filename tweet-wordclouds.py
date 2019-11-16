@@ -25,8 +25,6 @@ stopwords.add('&amp;')
 stopwords.add('will')
 stopwords.add('know')
 stopwords.add('really')
-# stopwords.add('...')
-# stopwords.add('-')
 stopwords.add('for')
 stopwords.add('said')
 stopwords.add('say')
@@ -39,7 +37,6 @@ stopwords.add('thank')
 stopwords.add('thanks')
 stopwords.add('one')
 stopwords.add('w')
-# stopwords.add('—')
 
 printable = set(string.printable)
 
@@ -49,7 +46,8 @@ def remove_links(w: str) -> bool:
 def remove_stopwords(w: str) -> bool:
     return (bool(w) and w not in stopwords)
 
-def make_image(text, mask_name: str, screen_name: str, background_color: str, mask_dir: str, output_dir: str):
+
+def make_image(text: str, mask_name: str, screen_name: str, background_color: str, mask_dir: str, output_dir: str):
     if not mask_name:
         mask_name = f'{mask_dir}/{screen_name}.png'
 
@@ -60,11 +58,10 @@ def make_image(text, mask_name: str, screen_name: str, background_color: str, ma
         mask=image_mask, stopwords=stopwords)
     wc.generate_from_frequencies(text)
 
-    plt.imshow(wc.recolor(color_func=image_colors),
-                interpolation="bilinear")
+    plt.imshow(wc.recolor(color_func=image_colors), interpolation="bilinear")
 
     plt.axis("off")
-    plt.title(f'@{screen_name}',  # Most common words in Tweets by 
+    plt.title(f'@{screen_name}',  # Most common words in Tweets by
         pad=15,
         fontdict={
             'fontsize': 'x-large',
