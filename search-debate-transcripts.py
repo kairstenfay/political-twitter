@@ -9,7 +9,7 @@ import imageio
 import argparse
 import matplotlib.pyplot as plt
 from typing import Any, List, Dict
-from collections import Counter
+from collections import Counter, defaultdict
 from wordcloud import WordCloud, ImageColorGenerator, STOPWORDS
 
 
@@ -38,6 +38,12 @@ stopwords.add('one')
 stopwords.add('go')
 stopwords.add('got')
 stopwords.add('let')
+stopwords.add('going')
+stopwords.add('now')
+stopwords.add('want')
+stopwords.add('right')
+stopwords.add('every')
+
 
 LOG = logging.getLogger(__name__)
 SPEAKER_NAME_PADDING = ': '
@@ -90,7 +96,7 @@ def make_image(text: Counter, mask_name: str):
 
 if __name__ == '__main__':
     import glob
-    dialogue: Dict[str, List[str]] = {}
+    dialogue: Dict[str, List[str]] = defaultdict(list)
     speaker: str = None
 
     for file in (glob.glob('*.txt')):
@@ -110,10 +116,7 @@ if __name__ == '__main__':
                     speaker = is_speech_start[0]
                     speech = line[len(speaker + SPEAKER_NAME_PADDING):]
 
-                    if not dialogue.get(speaker):
-                        dialogue[speaker] = [speech]  # TODO
-                    else:
-                        dialogue[speaker].append(speech)
+                    dialogue[speaker].append(speech)
 
                 else:
                     if not speaker:
