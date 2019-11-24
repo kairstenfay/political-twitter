@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import os
 import re
 import glob
@@ -21,20 +23,39 @@ import statistics
 LOG = logging.getLogger(__name__)
 
 
-def extract_emojis(str):
+def extract_emojis(string: str) -> str:
+
+    def is_emoji(char: str) -> bool:
+        return char in emoji.UNICODE_EMOJI
+
+
     regional_indicator_symbols = '🇦 🇧 🇨 🇩 🇪 🇫 🇬 🇭 🇮 🇯 🇰 🇱 🇲 🇳 🇴 🇵 🇶 🇷 🇸 🇹 🇺 🇻 🇼 🇽 🇾 🇿'
-    # Build two lists. one is from filtered indicator symbols. other normal
-    result = ''
-    for char in str:
-        if char not in emoji.UNICODE_EMOJI:
+    skin_tone_modifiers = '🏻🏼🏽🏾🏿'
+
+    non_standalone_emojis = regional_indicator_symbols + skin_tone_modifiers + '🏳'
+
+    emojis = ''
+    current_emoji = ''
+
+    for char in string:
+        if not is_emoji(char):
             continue
 
-        if char in regional_indicator_symbols:
-            result += char
-        else:
-            result += char + ' '
+        if len(current_emoji) == 2:
+            emojis += current_emoji + ' '
+            # Reset
+            current_emoji = ''
 
-    return result
+        if char in non_standalone_emojis:
+            current_emoji += char
+
+        else:
+            if current_emoji:
+                current_emoji += char
+            else:
+                emojis += char + ' '
+
+    return emojis
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="""
@@ -66,7 +87,7 @@ if __name__ == '__main__':
                 if emojis:
                     # temp = flag.dflagize(emojis)
                     # temp2 = temp.split(':')  # TODO hack workaround
-                    all_emojis += emojis.split(' ')
+                    all_emojis += [ e for e in emojis.split(' ') if e != '' ]
 
             counter = Counter(all_emojis)
             most_common = counter.most_common(args.n)
@@ -74,6 +95,7 @@ if __name__ == '__main__':
             stats[screen_name] = {
                 'emoji_frequencies': counter,
                 'top_emojis': most_common,
+                'most_common': counter.most_common(1)
             }
 
 
@@ -82,10 +104,12 @@ if __name__ == '__main__':
 
             if screen_name in stats:
                 LOG.info(screen_name)
-                print(f'Top user name emojis from recent  popular tweets to @{screen_name}')
+                # print(f'Top emojis from users recently tweeting to @{screen_name} #dataviz')
 
                 frequencies = stats[screen_name]['emoji_frequencies'].values()
-                for entry, count in stats[screen_name]['top_emojis']:
-                    print(math.ceil(count / most_common[len(most_common) - 1][1]) * entry)
+                for entry, count in stats[screen_name]['most_common']:
+                    print(f"@{screen_name}", entry)
+                    #print(math.ceil(count / most_common[len(most_common) - 1][1]) * entry)
 
-                print()
+    print('Top emojis from users recently tweeting to the following U.S. Democratic presidential candidates:\n')
+
