@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import ReactDOM from "react-dom"
 import styled from "styled-components"
 
@@ -20,16 +20,51 @@ const Img = styled.img`
   margin: 5px;
 `
 
+const H1 = styled.h1``
+
 const candidates = [
     Warren, Sanders, Biden, Yang, Buttigieg, Gabbard, Harris, Klobuchar, Booker
 ]
 
-const Candidate = (props) => (<Img src={props.candidate} />)
+const Candidate = (props) => (
+    <Img src={props.candidate}
+        onMouseEnter={props.handleHover}
+        onMouseOut={props.handleHover}
+        />)
+
+
+const Tooltip = (props) => {
+    return (
+        <div id="tooltip">
+            { props.children }
+        </div>
+    )
+}
+
+
 
 const App = () => {
+    const [ toolTipVisibility, setToolTipVisibility ] = useState(false)
+    const toggleToolTipVisibility = (toolTipVisibility) => {  // useEffect?
+        setToolTipVisibility(!toolTipVisibility)
+    } // TODO
+
     return (
         <div>
-            { candidates.map(c => (<Candidate candidate={c} />)) }
+            <h1>U.S. Democratic Presidential Candidates</h1>
+            <h2>A Tweet analysis</h2>
+            { candidates.map((c, i) => (
+                <Candidate
+                    key={i}
+                    candidate={c}
+                    handleHover={() => setToolTipVisibility(!toolTipVisibility)}
+                    />
+            )) }
+            { toolTipVisibility && (
+                <Tooltip>
+                    Hello, candidate!
+                </Tooltip>
+            )}
         </div>
     )
 }
