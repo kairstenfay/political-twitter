@@ -12,19 +12,48 @@ import Booker from "./img/CoryBooker.png"
 import Gabbard from "./img/TulsiGabbard.png"
 import Harris from "./img/KamalaHarris.png"
 import Klobuchar from "./img/AmyKlobuchar.png"
+
+const data = require("./data/emojis.json")
 // import Steyer from "./img/TomSteyer.png"
 
 
 const candidateMap = {
-    'Elizabeth Warren': { name: 'Elizabeth Warren', photo: Warren },
-    'Bernie Sanders': { name: 'Bernie Sanders', photo: Sanders },
-    'Joe Biden': { name: 'Joe Biden', photo: Biden },
-    'Andrew Yang': { name: 'Andrew Yang', photo: Yang },
-    'Pete Buttigieg': { name: 'Pete Buttigieg', photo: Buttigieg },
-    'Tulsi Gabbard': { name: 'Tulsi Gabbard', photo: Gabbard },
-    'Kamala Harris': { name: 'Kamala Harris', photo: Harris },
-    'Amy Klobuchar': { name: 'Amy Klobuchar', photo: Klobuchar },
-    'Cory Booker': { name: 'Cory Booker', photo: Booker },
+    'ewarren': {
+		name: 'Elizabeth Warren',
+        photo: Warren,
+	},
+    'BernieSanders': {
+		name: 'Bernie Sanders',
+        photo: Sanders,
+	},
+    'JoeBiden': {
+		name: 'Joe Biden',
+        photo: Biden,
+	},
+    'AndrewYang': {
+		name: 'Andrew Yang',
+        photo: Yang,
+	},
+    'PeteButtigieg': {
+		name: 'Pete Buttigieg',
+        photo: Buttigieg,
+	},
+    'TulsiGabbard': {
+		name: 'Tulsi Gabbard',
+        photo: Gabbard,
+	},
+    'KamalaHarris': {
+		name: 'Kamala Harris',
+        photo: Harris,
+	},
+    'amyklobuchar': {
+		name: 'Amy Klobuchar',
+        photo: Klobuchar,
+	},
+    'CoryBooker': {
+		name: 'Cory Booker',
+        photo: Booker,
+	},
 }
 
 const Img = styled.img`
@@ -40,15 +69,9 @@ const ToolTip = styled.div`
   border-radius: 5px;
 `
 
-const Candidate = (props) => (
-    <Img src={props.candidate.photo}
-        id={props.name}
-        ref={props.node}
-        onMouseEnter={props.handleHover}
-        onMouseOut={props.handleHover}
-        onClick={props.handleClick}
-        />
-    )
+const CandidatePortraits = styled.div`
+  background-color: white;
+`
 
 const CandidateStats = (props) => {
     return (
@@ -56,16 +79,52 @@ const CandidateStats = (props) => {
             Some facts about {props.candidate}:
             <ul>
                 <li>loves cheese</li>
-                <li>has a Twitter account</li>
+                <li>has a Twitter account @{data[props.candidate]}</li>
             </ul>
             { props.children }
         </ToolTip>
     )
 }
 
+const CandidateImage = (props) => (
+    <Img src={props.candidate.photo}
+        alt={`${props.candidate.name}`}
+        id={props.candidate.name}
+        ref={props.node}
+        onMouseEnter={props.handleMouseEnter}
+        onMouseLeave={props.handleMouseLeave}
+        onClick={props.handleClick}
+        />
+    )
+
+const TextBox = (props) => {
+    if (props.hoverCandidate) {
+        return (
+            <ToolTip>
+                Click to see more about {props.hoverCandidate}.
+            </ToolTip>
+        )
+    }
+    else if (props.candidate) {
+        return (
+            <CandidateStats candidate={props.candidate} />
+        )
+    }
+    else {
+        return (
+            <ToolTip>
+                Click to see more about a candidate.
+            </ToolTip>
+        )
+    }
+}
+
 const App = () => {
     const [ clickedCandidate, setClickedCandidate ] = useState(null)
+    const helpText = 'Click on a candidate to see their stats.'
+    // const [ textBoxText, setTextBoxText ] = useState(helpText)
     const [ hoverCandidate, setHoverCandidate ] = useState(null)
+
     const node = useRef();
 
     /**
@@ -79,9 +138,10 @@ const App = () => {
         setClickedCandidate(null)
       };
 
-    const handleHover = (candidate) => {  // useEffect?
-        hoverCandidate ? setHoverCandidate(null) : setHoverCandidate(candidate)
-    }
+
+    const handleMouseOver = e => {
+        setHoverCandidate(e.target.name)
+    };
 
     /**
      * Handle click and click-away effects.
@@ -95,31 +155,33 @@ const App = () => {
         };
       }, []);
 
+
+      
+    useEffect(() => {
+        console.log('effect')
+        return () => {
+        }
+    }, [ hoverCandidate ])
+
+
     return (
         <div>
             <h1>U.S. Democratic Presidential Candidates</h1>
             <h2>A Tweet analysis</h2>
-            { Object.values(candidateMap).map((c, i) => (
-                <Candidate
-                    node={node}
-                    key={i}
-                    candidate={c}
-                    handleHover={() => handleHover(c.name)}
-                    handleClick={() => setClickedCandidate(c.name)}
-                    />
-            )) }
-            <p>image credit: Politico</p>
-
-            { hoverCandidate
-                ? <CandidateStats candidate={hoverCandidate} />
-                : clickedCandidate
-                    ? <CandidateStats candidate={clickedCandidate} />
-                    : (
-                        <ToolTip>
-                            Click on a candidate to see their stats.
-                        </ToolTip>
-                    )
-            }
+            <CandidatePortraits>
+                { Object.values(candidateMap).map((c, i) => (
+                    <CandidateImage
+                        node={node}
+                        key={i}
+                        candidate={c}
+                        handleMouseEnter={() => setHoverCandidate(c.name)}
+                        handleMouseLeave={() => setHoverCandidate(null)}
+                        handleClick={() => setClickedCandidate(c.name)}
+                        />
+                )) }
+                <p>image credit: Politico</p>
+            </CandidatePortraits>
+            <TextBox candidate={clickedCandidate} hoverCandidate={hoverCandidate} />
         </div>
     )
 }
