@@ -91,21 +91,20 @@ const CandidateImage = (props) => (
         alt={`${props.candidate.name}`}
         id={props.candidate.name}
         ref={props.node}
-        onMouseEnter={props.handleMouseEnter}
-        onMouseLeave={props.handleMouseLeave}
         onClick={props.handleClick}
         />
     )
 
 const TextBox = (props) => {
-    if (props.hoverCandidate) {
-        return (
-            <ToolTip>
-                Click to see more about {props.hoverCandidate}.
-            </ToolTip>
-        )
-    }
-    else if (props.candidate) {
+    console.log(props.hoverCandidate)
+    // if (props.hoverCandidate) {
+    //     return (
+    //         <ToolTip>
+    //             Click to see more about {props.hoverCandidate}.
+    //         </ToolTip>
+    //     )
+    // }
+    if (props.candidate) {
         return (
             <CandidateStats candidate={props.candidate} />
         )
@@ -121,9 +120,7 @@ const TextBox = (props) => {
 
 const App = () => {
     const [ clickedCandidate, setClickedCandidate ] = useState(null)
-    const helpText = 'Click on a candidate to see their stats.'
-    // const [ textBoxText, setTextBoxText ] = useState(helpText)
-    const [ hoverCandidate, setHoverCandidate ] = useState(null)
+    // const [ hoverCandidate, setHoverCandidate ] = useState(null)
 
     const node = useRef();
 
@@ -139,10 +136,6 @@ const App = () => {
       };
 
 
-    const handleMouseOver = e => {
-        setHoverCandidate(e.target.name)
-    };
-
     /**
      * Handle click and click-away effects.
      */
@@ -156,14 +149,6 @@ const App = () => {
       }, []);
 
 
-      
-    useEffect(() => {
-        console.log('effect')
-        return () => {
-        }
-    }, [ hoverCandidate ])
-
-
     return (
         <div>
             <h1>U.S. Democratic Presidential Candidates</h1>
@@ -174,14 +159,12 @@ const App = () => {
                         node={node}
                         key={i}
                         candidate={c}
-                        handleMouseEnter={() => setHoverCandidate(c.name)}
-                        handleMouseLeave={() => setHoverCandidate(null)}
                         handleClick={() => setClickedCandidate(c.name)}
                         />
                 )) }
                 <p>image credit: Politico</p>
             </CandidatePortraits>
-            <TextBox candidate={clickedCandidate} hoverCandidate={hoverCandidate} />
+            <TextBox candidate={clickedCandidate} />
         </div>
     )
 }
