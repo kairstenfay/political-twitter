@@ -15,14 +15,19 @@ const Img = styled.img`
 `
 
 const ToolTip = styled.div`
-  background-color: lightgrey;
+  background-color: white;
   padding: 3vw;
-  max-width: 30vw;
-  border-radius: 5px;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  margin: 1vw;
 `
 
 const CandidatePortraits = styled.div`
   background-color: white;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  padding: 5vw;
+  margin: 1vw;
 `
 
 const CandidateStats = (props) => {
