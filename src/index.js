@@ -26,6 +26,9 @@ const CandidatePortraits = styled.div`
 `
 
 const CandidateStats = (props) => {
+    if (!props.candidate) {
+        return (<ToolTip>Click a candidate to see their stats.</ToolTip>)
+    }
     return (
         <ToolTip id="tooltip">
             Some facts about {props.candidate}:
@@ -44,37 +47,17 @@ const CandidateImage = (props) => (
         id={props.candidate.name}
         ref={props.node}
         onClick={props.handleClick}
+        onMouseEnter={props.handleMouseEnter}
+        onMouseLeave={props.handleMouseLeave}
+        onMouseOver={props.handleMouseOver}
+        onMouseOut={props.handleMouseOut}
         />
     )
 
-const TextBox = (props) => {
-    console.log(props.hoverCandidate)
-    // if (props.hoverCandidate) {
-    //     return (
-    //         <ToolTip>
-    //             Click to see more about {props.hoverCandidate}.
-    //         </ToolTip>
-    //     )
-    // }
-    if (props.candidate) {
-        return (
-            <CandidateStats candidate={props.candidate} />
-        )
-    }
-    else {
-        return (
-            <ToolTip>
-                Click to see more about a candidate.
-            </ToolTip>
-        )
-    }
-}
-
 const App = () => {
     const [ clickedCandidate, setClickedCandidate ] = useState(null)
-    // const [ hoverCandidate, setHoverCandidate ] = useState(null)
-
-    const node = useRef();
+    const [ hoverCandidate, setHoverCandidate ] = useState(null)
+    const node = useRef()
 
     /**
      * Reset the clickedCandidate to `null` on click-away events.
@@ -86,7 +69,6 @@ const App = () => {
         }  // outside click
         setClickedCandidate(null)
       };
-
 
     /**
      * Handle click and click-away effects.
@@ -100,23 +82,29 @@ const App = () => {
         };
       }, []);
 
-
     return (
         <div>
             <h1>U.S. Democratic Presidential Candidates</h1>
             <h2>A Tweet analysis</h2>
             <CandidatePortraits>
                 { Object.values(candidateMap).map((c, i) => (
-                    <CandidateImage
-                        node={node}
-                        key={i}
+                    <CandidateImage key={i}
                         candidate={c}
+                        node={node}
                         handleClick={() => setClickedCandidate(c.name)}
+                        handleMouseOver={() => setHoverCandidate(c.name)}
+                        handleMouseEnter={() => setHoverCandidate(c.name)}
+                        handleMouseOut={() => setHoverCandidate(null)}
+                        handleMouseLeave={() => setHoverCandidate(null)}
                         />
                 )) }
                 <p>image credit: Politico</p>
             </CandidatePortraits>
-            <TextBox candidate={clickedCandidate} />
+
+            {( hoverCandidate && hoverCandidate !== clickedCandidate )
+                ? <ToolTip>Click to see stats about {hoverCandidate}.</ToolTip>
+                : <CandidateStats candidate={clickedCandidate} />
+            }
         </div>
     )
 }
