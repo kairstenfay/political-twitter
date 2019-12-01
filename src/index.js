@@ -6,6 +6,7 @@ import './main.css';
 import candidateMap from "./candidateMap.js"
 
 const data = require("./data/emojis.json")
+const twitter = require("./img/twitter.png")
 
 const Img = styled.img`
   border-radius: 50%;
@@ -23,7 +24,7 @@ const CandidatePortraits = styled.div`
 `
 
 const Emoji = styled.span`
-  width: 80vw;
+  width: 50vw;
   font-size: 8px;
   border-left: 1px solid black;
   margin: 1vh;
@@ -34,7 +35,12 @@ const Emoji = styled.span`
 
 const Tooltip = styled.div`
   width: 350px;
+  display: flex;
+  flex-direction: row;
+  margin-left: -5vw;
+  padding: 15px;
 `
+
 
 const CandidateStats = (props) => {
     if (!props.candidate) {
@@ -42,11 +48,20 @@ const CandidateStats = (props) => {
     }
 
     const screenName = candidateMap[props.candidate].screenName;
+
+    const politicalEmojis = {
+        '🧢': 'https://www.urbandictionary.com/define.php?term=🧢',
+        '🌹': 'https://mashable.com/2017/05/27/hidden-meaning-rose-emoji-dsa/',
+    }
+
     return (
         <Tooltip id="tooltip" className="CandidateStats">
             <legend>
                 Top emojis in Tweets sent to {props.candidate}'s Twitter
                 account <a href={`http://twitter.com/${screenName}`}>@{screenName}</a>
+
+                Some definitions:
+
             </legend>
             <ul className="CandidateStats">
                 {data[screenName].most_common.map(x => (
@@ -134,8 +149,9 @@ const App = () => {
     return (
         <div>
             <header>
-                <h1>U.S. Presidential Candidates, 2020</h1>
-                <h2>A Tweet analysis</h2>
+                <h1><img src={twitter} />My Country Tis of Tweet:</h1>
+                <h2>Who on Twitter talks to U.S. 2020 Presidential Candidates?</h2>
+                <h3>A Tweet analysis by Kairsten Fay</h3>
             </header>
             <CandidatePortraits>
                 { Object.values(candidateMap).map((c, i) => (
