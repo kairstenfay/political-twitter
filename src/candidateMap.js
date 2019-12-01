@@ -7,44 +7,63 @@ import Booker from "./img/CoryBooker.png"
 import Gabbard from "./img/TulsiGabbard.png"
 import Harris from "./img/KamalaHarris.png"
 import Klobuchar from "./img/AmyKlobuchar.png"
-// import Steyer from "./img/TomSteyer.png"
-
+import Steyer from "./img/TomSteyer.png"
+import Bloomberg from "./img/MikeBloomberg.png"
 
 export default {
-    'ewarren': {
-    name: 'Elizabeth Warren',
-    photo: Warren,
+    'Elizabeth Warren': {
+		name: 'Elizabeth Warren',
+		screenName: 'ewarren',
+        photo: Warren,
     },
-    'BernieSanders': {
-        name: 'Bernie Sanders',
+    'Bernie Sanders': {
+		name: 'Bernie Sanders',
+		screenName: 'BernieSanders',
         photo: Sanders,
     },
-    'JoeBiden': {
-        name: 'Joe Biden',
+    'Joe Biden': {
+		name: 'Joe Biden',
+		screenName: 'JoeBiden',
         photo: Biden,
     },
-    'AndrewYang': {
-        name: 'Andrew Yang',
+    'Andrew Yang': {
+		name: 'Andrew Yang',
+		screenName: 'AndrewYang',
         photo: Yang,
     },
-    'PeteButtigieg': {
-        name: 'Pete Buttigieg',
+    'Pete Buttigieg': {
+		name: 'Pete Buttigieg',
+		screenName: 'PeteButtigieg',
         photo: Buttigieg,
     },
-    'TulsiGabbard': {
-        name: 'Tulsi Gabbard',
+    'Tulsi Gabbard': {
+		name: 'Tulsi Gabbard',
+		screenName: 'TulsiGabbard',
         photo: Gabbard,
     },
-    'KamalaHarris': {
-        name: 'Kamala Harris',
+    'Kamala Harris': {
+		name: 'Kamala Harris',
+		screenName: 'KamalaHarris',
         photo: Harris,
     },
-    'amyklobuchar': {
-        name: 'Amy Klobuchar',
+    'Amy Klobuchar': {
+		name: 'Amy Klobuchar',
+		screenName: 'amyklobuchar',
         photo: Klobuchar,
     },
-    'CoryBooker': {
-        name: 'Cory Booker',
+    'Cory Booker': {
+		name: 'Cory Booker',
+		screenName: 'CoryBooker',
         photo: Booker,
+    },
+    'Tom Steyer': {
+		name: 'Tom Steyer',
+		screenName: 'TomSteyer',
+        photo: Steyer,
+    },
+    'Michael Bloomberg': {
+		name: 'Michael Bloomberg',
+		screenName: 'MikeBloomberg',
+        photo: Bloomberg,
     },
 }

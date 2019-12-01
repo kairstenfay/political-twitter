@@ -10,7 +10,8 @@ const data = require("./data/emojis.json")
 
 const Img = styled.img`
   border-radius: 50%;
-  max-width: 15vw;
+  width: 20vw;
+  max-width: 150px;
   margin: 5px;
 `
 
@@ -28,18 +29,29 @@ const CandidatePortraits = styled.div`
   border-radius: 2px;
   padding: 5vw;
   margin: 1vw;
+  text-align: center;
 `
 
 const CandidateStats = (props) => {
     if (!props.candidate) {
-        return (<ToolTip>Click a candidate to see their stats.</ToolTip>)
+        return (<ToolTip id="tooltip">Click a candidate to see their stats.</ToolTip>)
     }
+
+    const screenName = candidateMap[props.candidate].screenName;
     return (
-        <ToolTip id="tooltip">
-            Some facts about {props.candidate}:
-            <ul>
-                <li>loves cheese</li>
-                <li>has a Twitter account @{data[props.candidate]}</li>
+        <ToolTip id="tooltip" className="CandidateStats">
+            Some facts about {props.candidate}'s Twitter
+            account
+            <a href={`http://twitter.com/${screenName}`}>
+                @{screenName}
+            </a>
+            <ul className="CandidateStats">
+                <li>
+                    {JSON.stringify(data[screenName].most_common)}
+                </li>
+                {data[screenName].most_common.map(x => (
+                <li key={x[0]}>{`${x[0]} `.repeat(x[1])}</li>
+                ))}
             </ul>
             { props.children }
         </ToolTip>
@@ -62,15 +74,26 @@ const CandidateImage = (props) => (
 const App = () => {
     const [ clickedCandidate, setClickedCandidate ] = useState(null)
     const [ hoverCandidate, setHoverCandidate ] = useState(null)
-    const node = useRef()
+    // const node = useRef()
 
     /**
      * Reset the clickedCandidate to `null` on click-away events.
      * @param {*} e
      */
     const handleClick = e => {
-        if (node.current.contains(e.target)) {
-          return;
+        const t = e.target
+        // if (node && node.current.contains(e.target)) {
+        //     console.log('target is node')
+        //     return;
+        // }
+        console.log(t);
+        console.log(t.type)
+        if (t.localName === 'a' ||
+            t.id === 'tooltip' ||
+            (t.parentElement & t.parentElement.id === 'tooltip') ||
+            (t.parentElement.parentElement && t.parentElement.parentElement.id === 'tooltip') ||
+            Object.keys(candidateMap).includes(t.id)) {
+            return;
         }  // outside click
         setClickedCandidate(null)
       };
@@ -95,8 +118,9 @@ const App = () => {
                 { Object.values(candidateMap).map((c, i) => (
                     <CandidateImage key={i}
                         candidate={c}
-                        node={node}
-                        handleClick={() => setClickedCandidate(c.name)}
+                        handleClick={() => {
+                            if (c.name !== clickedCandidate) { setClickedCandidate(c.name) }
+                        }}
                         handleMouseOver={() => setHoverCandidate(c.name)}
                         handleMouseEnter={() => setHoverCandidate(c.name)}
                         handleMouseOut={() => setHoverCandidate(null)}
