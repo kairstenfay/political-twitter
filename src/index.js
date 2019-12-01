@@ -24,7 +24,7 @@ const CandidatePortraits = styled.div`
 `
 
 const Emoji = styled.span`
-  width: 50vw;
+  width: 70vw;
   font-size: 8px;
   border-left: 1px solid black;
   margin: 1vh;
@@ -36,19 +36,19 @@ const Emoji = styled.span`
 const Tooltip = styled.div`
   width: 350px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin-left: -5vw;
   padding: 15px;
 `
 
 const HelpText = styled.div`
-  width: 350px;
   display: flex;
   flex-direction: row;
-  margin-left: -5vw;
-  padding: 15px;
+  padding: 25px 15px;
   height: 5vh;
   background-color: grey;
+  color: white;
+  font-size: 20px;
 `
 
 
@@ -65,13 +65,14 @@ const CandidateStats = (props) => {
     }
 
     return (
-        <Tooltip id="tooltip" className="CandidateStats">
+        <Tooltip ref={props.node} id="tooltip" className="CandidateStats">
+            <h2>
+                {props.candidate}
+            </h2>
             <legend>
-                Top emojis in Tweets sent to {props.candidate}'s Twitter
-                account <a href={`http://twitter.com/${screenName}`}>@{screenName}</a>
-
-                Some definitions:
-
+                Top emojis in the names of accounts who sent Tweets
+                to {props.candidate}'s
+                Twitter <a href={`http://twitter.com/${screenName}`}>@{screenName}.</a>
             </legend>
             <ul className="CandidateStats">
                 {data[screenName].most_common.map(x => (
@@ -115,7 +116,7 @@ const CandidateImage = (props) => (
 const App = () => {
     const [ clickedCandidate, setClickedCandidate ] = useState(null)
     const [ hoverCandidate, setHoverCandidate ] = useState(null)
-    // const node = useRef()
+    const node = useRef()
 
     /**
      * Reset the clickedCandidate to `null` on click-away events.
@@ -171,9 +172,16 @@ const App = () => {
                 { Object.values(candidateMap).map((c, i) => (
                     <CandidateImage key={i}
                         candidate={c}
-                        handleClick={() => {
+                        handleClick={() => { // todo refactor
                             if (c.name !== clickedCandidate) { setClickedCandidate(c.name) }
-                        }}
+                            if (node.current){
+                                    node.current.scrollIntoView({
+                                       behavior: "smooth",
+                                       block: "nearest"
+                                    })
+                                }
+                            }
+                        }
                         handleMouseOver={() => setHoverCandidate(c.name)}
                         handleMouseEnter={() => setHoverCandidate(c.name)}
                         handleMouseOut={() => setHoverCandidate(null)}
@@ -184,7 +192,7 @@ const App = () => {
             </CandidatePortraits>
 
             {(clickedCandidate && (
-                <CandidateStats candidate={clickedCandidate} />
+                <CandidateStats node={node} candidate={clickedCandidate} />
             ))}
         </div>
     )
