@@ -37,12 +37,12 @@ if __name__ == '__main__':
     if args.q:
         tweets = tweepy.Cursor(api.search, q=args.q, result_type='mixed', until=args.d,
             tweet_mode='extended',
-            ).items(5000)
+            ).items(2300)
 
     elif args.u:
         tweets = tweepy.Cursor(api.user_timeline, id=args.u, result_type='mixed', until=args.d,
             tweet_mode='extended',
-            ).items(5000)
+            ).items(2300)
 
     else:
         raise Exception("A query or user ID is required.")
