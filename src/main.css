@@ -26,9 +26,11 @@ h2 {
 }
 
 ul {
+    display: flex;
+    flex-direction: column;
     list-style: None;
     text-align: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 li {
