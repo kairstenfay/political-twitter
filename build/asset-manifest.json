@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.1517dde8.chunk.css",
+    "main.js": "/static/js/main.4fa24cab.chunk.js",
+    "main.js.map": "/static/js/main.4fa24cab.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.6a3c3cbd.js",
+    "runtime-main.js.map": "/static/js/runtime-main.6a3c3cbd.js.map",
+    "static/js/2.93b9edaa.chunk.js": "/static/js/2.93b9edaa.chunk.js",
+    "static/js/2.93b9edaa.chunk.js.map": "/static/js/2.93b9edaa.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.4206152b770bd6168bca89fdfe2e4836.js": "/precache-manifest.4206152b770bd6168bca89fdfe2e4836.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/main.1517dde8.chunk.css.map": "/static/css/main.1517dde8.chunk.css.map",
+    "static/media/AmyKlobuchar.png": "/static/media/AmyKlobuchar.2f49e4aa.png",
+    "static/media/AndrewYang.png": "/static/media/AndrewYang.8e583610.png",
+    "static/media/BernieSanders.png": "/static/media/BernieSanders.fca28f5b.png",
+    "static/media/CoryBooker.png": "/static/media/CoryBooker.a5be3b6b.png",
+    "static/media/JoeBiden.png": "/static/media/JoeBiden.a942a019.png",
+    "static/media/KamalaHarris.png": "/static/media/KamalaHarris.cc2f9357.png",
+    "static/media/MikeBloomberg.png": "/static/media/MikeBloomberg.0c361d79.png",
+    "static/media/PeteButtigieg.png": "/static/media/PeteButtigieg.ffc9f511.png",
+    "static/media/TomSteyer.png": "/static/media/TomSteyer.41c0e288.png",
+    "static/media/TulsiGabbard.png": "/static/media/TulsiGabbard.dd3da2a9.png",
+    "static/media/ewarren.png": "/static/media/ewarren.a4fb84ae.png",
+    "static/media/twitter.png": "/static/media/twitter.2c64644f.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6a3c3cbd.js",
+    "static/js/2.93b9edaa.chunk.js",
+    "static/css/main.1517dde8.chunk.css",
+    "static/js/main.4fa24cab.chunk.js"
+  ]
+}
