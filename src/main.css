@@ -1,8 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
 body {
     background-color: ghostwhite;
-    margin: 20%;
-    font-family: Tahoma
+    font-family: 'Roboto', sans-serif;
 }
+
+@media only screen and (min-width: 800px) {
+    body {
+        margin: 20%;
+    }
+
+    header {
+        padding: 10vw;
+    }
+}
+
 
 h1 {
     font-size: 36px;
@@ -15,12 +27,16 @@ h2 {
 ul {
     list-style: None;
     text-align: center;
+    align-items: center;
 }
 
 li {
-    margin-left: -5px;
-    text-align: center;
-    display: flex;
+    font-family: monospace;
+    font-size: 26px;
+    margin-left: -1vw;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 1fr 7fr;
     align-items: center;
-    justify-content: center;
+    justify-content: right;
 }
