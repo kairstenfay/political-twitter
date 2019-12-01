@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.1517dde8.chunk.css",
+    "main.css": "/static/css/main.c8327a18.chunk.css",
     "main.js": "/static/js/main.4fa24cab.chunk.js",
     "main.js.map": "/static/js/main.4fa24cab.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.6a3c3cbd.js",
@@ -8,9 +8,9 @@
     "static/js/2.93b9edaa.chunk.js": "/static/js/2.93b9edaa.chunk.js",
     "static/js/2.93b9edaa.chunk.js.map": "/static/js/2.93b9edaa.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.4206152b770bd6168bca89fdfe2e4836.js": "/precache-manifest.4206152b770bd6168bca89fdfe2e4836.js",
+    "precache-manifest.46520658f054ccfae8267c59f359b707.js": "/precache-manifest.46520658f054ccfae8267c59f359b707.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.1517dde8.chunk.css.map": "/static/css/main.1517dde8.chunk.css.map",
+    "static/css/main.c8327a18.chunk.css.map": "/static/css/main.c8327a18.chunk.css.map",
     "static/media/AmyKlobuchar.png": "/static/media/AmyKlobuchar.2f49e4aa.png",
     "static/media/AndrewYang.png": "/static/media/AndrewYang.8e583610.png",
     "static/media/BernieSanders.png": "/static/media/BernieSanders.fca28f5b.png",
@@ -27,7 +27,7 @@
   "entrypoints": [
     "static/js/runtime-main.6a3c3cbd.js",
     "static/js/2.93b9edaa.chunk.js",
-    "static/css/main.1517dde8.chunk.css",
+    "static/css/main.c8327a18.chunk.css",
     "static/js/main.4fa24cab.chunk.js"
   ]
 }
