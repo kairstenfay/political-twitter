@@ -14,10 +14,13 @@ h2 {
 
 ul {
     list-style: None;
+    text-align: center;
 }
 
 li {
     margin-left: -5px;
     text-align: center;
     display: flex;
+    align-items: center;
+    justify-content: center;
 }

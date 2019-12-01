@@ -74,10 +74,12 @@ const Emojis = (props) => {
     return (
         <li>
             <Emoji>
-                {emoji.repeat(count / 2)}
-            </Emoji> {count}
-
-            {emoji.repeat(count / 2)}
+                {`${emoji} `.repeat(count / 2)}
+            </Emoji>
+            {count}
+            <Emoji>
+                {`${emoji} `.repeat(count / 2)}
+            </Emoji>
         </li>
 
     )
