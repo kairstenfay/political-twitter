@@ -1,19 +1,23 @@
 body {
     background-color: ghostwhite;
-    margin: 20% 5%;
+    margin: 20%;
     font-family: Tahoma
 }
 
 h1 {
     font-size: 36px;
-    background-color: white;
-    margin: 0;
-    padding: 2vh;
 }
 
 h2 {
     font-size: 20px;
-    background-color: white;
-    margin-top: 0;
-    padding: 2vh;
+}
+
+ul {
+    list-style: None;
+}
+
+li {
+    margin-left: -5px;
+    text-align: center;
+    display: flex;
 }

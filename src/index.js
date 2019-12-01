@@ -8,6 +8,14 @@ import candidateMap from "./candidateMap.js"
 const data = require("./data/emojis.json")
 
 
+const Header = styled.header`
+  background-color: white;
+  padding: 30vw;
+  border: 1px solid lightgrey;
+  border-radius: 2px;
+  margin: 1vw;
+`
+
 const Img = styled.img`
   border-radius: 50%;
   width: 20vw;
@@ -32,6 +40,10 @@ const CandidatePortraits = styled.div`
   text-align: center;
 `
 
+const Emoji = styled.span`
+  display: flex;
+`
+
 const CandidateStats = (props) => {
     if (!props.candidate) {
         return (<ToolTip id="tooltip">Click a candidate to see their stats.</ToolTip>)
@@ -41,20 +53,33 @@ const CandidateStats = (props) => {
     return (
         <ToolTip id="tooltip" className="CandidateStats">
             Some facts about {props.candidate}'s Twitter
-            account
-            <a href={`http://twitter.com/${screenName}`}>
-                @{screenName}
-            </a>
+            account <a href={`http://twitter.com/${screenName}`}>@{screenName}</a>
             <ul className="CandidateStats">
                 <li>
                     {JSON.stringify(data[screenName].most_common)}
                 </li>
                 {data[screenName].most_common.map(x => (
-                <li key={x[0]}>{`${x[0]} `.repeat(x[1])}</li>
+                    <Emojis key={x} emoji={x} />
                 ))}
             </ul>
             { props.children }
         </ToolTip>
+    )
+}
+
+const Emojis = (props) => {
+    const emoji = props.emoji[0]
+    const count = props.emoji[1]
+
+    return (
+        <li>
+            <Emoji>
+                {emoji.repeat(count / 2)}
+            </Emoji> {count}
+
+            {emoji.repeat(count / 2)}
+        </li>
+
     )
 }
 
@@ -88,6 +113,11 @@ const App = () => {
         // }
         console.log(t);
         console.log(t.type)
+        if (t.localName == 'html') {
+            setClickedCandidate(null)
+            return
+        }
+
         if (t.localName === 'a' ||
             t.id === 'tooltip' ||
             (t.parentElement & t.parentElement.id === 'tooltip') ||
@@ -112,8 +142,10 @@ const App = () => {
 
     return (
         <div>
-            <h1>U.S. Democratic Presidential Candidates</h1>
-            <h2>A Tweet analysis</h2>
+            <Header>
+                <h1>U.S. Presidential Candidates, 2020</h1>
+                <h2>A Tweet analysis</h2>
+            </Header>
             <CandidatePortraits>
                 { Object.values(candidateMap).map((c, i) => (
                     <CandidateImage key={i}
