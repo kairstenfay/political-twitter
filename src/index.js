@@ -41,10 +41,20 @@ const Tooltip = styled.div`
   padding: 15px;
 `
 
+const HelpText = styled.div`
+  width: 350px;
+  display: flex;
+  flex-direction: row;
+  margin-left: -5vw;
+  padding: 15px;
+  height: 5vh;
+  background-color: grey;
+`
+
 
 const CandidateStats = (props) => {
     if (!props.candidate) {
-        return (<div id="tooltip">Click a candidate to see their stats.</div>)
+        return null
     }
 
     const screenName = candidateMap[props.candidate].screenName;
@@ -153,6 +163,10 @@ const App = () => {
                 <h2>Who on Twitter talks to U.S. 2020 Presidential Candidates?</h2>
                 <h3>A Tweet analysis by Kairsten Fay</h3>
             </header>
+            { hoverCandidate
+                ? (<HelpText>Click to see stats about {hoverCandidate}.</HelpText>)
+                : (<HelpText>Click a candidate to see their stats.</HelpText>)
+            }
             <CandidatePortraits>
                 { Object.values(candidateMap).map((c, i) => (
                     <CandidateImage key={i}
@@ -169,10 +183,9 @@ const App = () => {
                 <p>image credits: Politico</p>
             </CandidatePortraits>
 
-            {( hoverCandidate && hoverCandidate !== clickedCandidate )
-                ? <div>Click to see stats about {hoverCandidate}.</div>
-                : <CandidateStats candidate={clickedCandidate} />
-            }
+            {(clickedCandidate && (
+                <CandidateStats candidate={clickedCandidate} />
+            ))}
         </div>
     )
 }
