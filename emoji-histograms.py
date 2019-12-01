@@ -70,13 +70,18 @@ if __name__ == '__main__':
 
     stats: Dict[str, Dict[str, Any]] = {}
 
+    LOG.info("Iterating over files now")
     for filename in glob.glob('data/*.ndjson'):
+        LOG.info(f"Opening {filename}")
+
         screen_name = re.search(r'^data/(.*).ndjson$', filename)[1]
 
         with open(filename, "r") as f:
             all_emojis = []
 
+            lines = 0
             for line in f:
+                lines += 1
                 tweet = json.loads(line)
 
                 if args.field == 'text':
@@ -95,21 +100,24 @@ if __name__ == '__main__':
             stats[screen_name] = {
                 'emoji_frequencies': counter,
                 'top_emojis': most_common,
-                'most_common': counter.most_common(1)
+                'most_common': counter.most_common(args.n),
+                'tweets': lines,
             }
 
+            lines = 0
 
             if not dict(counter):
                 continue
 
-            if screen_name in stats:
-                LOG.info(screen_name)
+            #if screen_name in stats:
+                #LOG.info(screen_name)
                 # print(f'Top emojis from users recently tweeting to @{screen_name} #dataviz')
 
-                frequencies = stats[screen_name]['emoji_frequencies'].values()
-                for entry, count in stats[screen_name]['most_common']:
-                    print(f"@{screen_name}", entry)
+                #frequencies = stats[screen_name]['emoji_frequencies'].values()
+                #for entry, count in stats[screen_name]['most_common']:
+                    # print(f"@{screen_name}", entry)
                     #print(math.ceil(count / most_common[len(most_common) - 1][1]) * entry)
 
-    print('Top emojis from users recently tweeting to the following U.S. Democratic presidential candidates:\n')
+    # print('Top emojis from users recently tweeting to the following U.S. Democratic presidential candidates:\n')
 
+    print(json.dumps(stats))
