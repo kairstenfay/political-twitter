@@ -68,12 +68,12 @@ const CandidateStats = (props) => {
             <h2>
                 Top Emojis from Users Tweeting to {props.candidate}
             </h2>
-            <legend>
+            <legend for="CandidateStats">
                 The 15 most common emojis from the names of Twitter users
                 sending {data[screenName].tweets} Tweets
                 to <a href={`http://twitter.com/${screenName}`}>@{screenName}.</a>
             </legend>
-            <ul className="CandidateStats">
+            <ul id="CandidateStats">
                 {data[screenName].most_common.map(x => (
                     <Emojis key={x} emoji={x} />
                 ))}
