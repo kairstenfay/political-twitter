@@ -34,21 +34,20 @@ const Emoji = styled.span`
 `
 
 const Tooltip = styled.div`
-  width: 350px;
   display: flex;
   flex-direction: column;
   margin-left: -5vw;
   padding: 15px;
 `
 
-const HelpText = styled.div`
+const HelpText = styled.p`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   padding: 25px 15px;
   height: 5vh;
   background-color: grey;
   color: white;
-  font-size: 20px;
 `
 
 
@@ -67,12 +66,12 @@ const CandidateStats = (props) => {
     return (
         <Tooltip ref={props.node} id="tooltip" className="CandidateStats">
             <h2>
-                {props.candidate}
+                Top Emojis from Users Tweeting to {props.candidate}
             </h2>
             <legend>
-                Top emojis in the names of accounts who sent Tweets
-                to {props.candidate}'s
-                Twitter <a href={`http://twitter.com/${screenName}`}>@{screenName}.</a>
+                The 15 most common emojis from the names of Twitter users
+                sending {data[screenName].tweets} Tweets
+                to <a href={`http://twitter.com/${screenName}`}>@{screenName}.</a>
             </legend>
             <ul className="CandidateStats">
                 {data[screenName].most_common.map(x => (
@@ -160,7 +159,7 @@ const App = () => {
     return (
         <div>
             <header>
-                <h1><img src={twitter} />My Country Tis of Tweet:</h1>
+                <h1><img id="twitterBird" src={twitter} />My Country Tis of Tweet:</h1>
                 <h2>Who on Twitter talks to U.S. 2020 Presidential Candidates?</h2>
                 <h3>A Tweet analysis by Kairsten Fay</h3>
             </header>
