@@ -49,10 +49,5 @@ if __name__ == '__main__':
 
     for tweet in tweets:
         details = tweet._json
-        #if (details['metadata'] and details['metadata']['iso_language_code'] != 'en') and details['lang'] != 'en':
-        #    continue
 
         print(json.dumps(details))
-
-
-# avg num followers; top tweet hashtags ; top user hashtags ; top emojis ; sentiment score

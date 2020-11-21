@@ -37,6 +37,28 @@ stopwords.add('thank')
 stopwords.add('thanks')
 stopwords.add('one')
 stopwords.add('w')
+stopwords.add('big')
+stopwords.add('go')
+stopwords.add('got')
+stopwords.add('lets')
+stopwords.add('good')
+stopwords.add('now')
+stopwords.add('great')
+stopwords.add('new')
+stopwords.add('made')
+stopwords.add('going')
+stopwords.add('yet')
+stopwords.add('never')
+stopwords.add('time')
+stopwords.add('many')
+stopwords.add('every')
+stopwords.add('much')
+stopwords.add('thats')
+stopwords.add('lot')
+stopwords.add('next')
+stopwords.add('see')
+stopwords.add('youre')
+stopwords.add('ill')
 
 printable = set(string.printable)
 
@@ -54,8 +76,8 @@ def make_image(text: str, mask_name: str, screen_name: str, background_color: st
     image_mask = imageio.imread(mask_name, as_gray=False, pilmode="RGB")
     image_colors = ImageColorGenerator(image_mask)
 
-    wc = WordCloud(background_color=background_color, max_words=5000, repeat=False,
-        mask=image_mask, stopwords=stopwords)
+    wc = WordCloud(background_color=background_color, max_words=5000,
+        repeat=False, mask=image_mask, stopwords=stopwords)
     wc.generate_from_frequencies(text)
 
     plt.imshow(wc.recolor(color_func=image_colors), interpolation="bilinear")
@@ -74,7 +96,7 @@ def make_image(text: str, mask_name: str, screen_name: str, background_color: st
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="""
         Create wordmaps from Tweets in the shape and color of a given mask.""")
-    parser.add_argument('--filename', metavar='<filename>', type=str, required=True,
+    parser.add_argument('--filename', metavar='<filename.ndjson>', type=str, required=True,
                         help='the file of newline-delimited Tweets to analyze.')
     parser.add_argument('--mask', metavar='<mask>', type=str, required=False,
                         help='a PNG file used to mask the output data viz.')
@@ -92,7 +114,7 @@ if __name__ == '__main__':
     #for filename in glob.glob('data/*-tweets.ndjson'):
     filename = args.filename
 
-    screen_name = re.search(r'.*data/(.*)-tweets.ndjson$', filename)[1]
+    screen_name = re.search(r'.*data/(.*).ndjson$', filename)[1]
 
     with open(filename, "r") as f:
         all_hashtags = []
@@ -116,7 +138,7 @@ if __name__ == '__main__':
 
         stats[screen_name] = {
             'hashtag_frequences': counter,
-            'top_15_words': counter.most_common(15)
+            'top_50_words': counter.most_common(50)
         }
 
         if not dict(counter):
@@ -126,4 +148,4 @@ if __name__ == '__main__':
 
         if screen_name in stats:
             print(screen_name, lines)
-            print(stats[screen_name]['top_15_words'])
+            print(stats[screen_name]['top_50_words'])
